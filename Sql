@@ -139,4 +139,101 @@ VALUES
 ('PAY5', 'C8', '2025-01-25', 6000, 'Bank Transfer'),
 ('PAY6', 'C10', '2025-04-01', 4000, 'Credit Card');
 
+--4.1 Policy → Holder → Agent
+
+SELECT 
+  p.policy_number,
+  p.policy_type,
+  h.holder_name,
+  a.agent_name,
+  a.branch
+FROM `cna-131041.xagenticetl.policy` p
+JOIN `cna-131041.xagenticetl.policy_holder` h 
+  ON p.policy_id = h.policy_id
+JOIN `cna-131041.xagenticetl.agent` a 
+  ON p.agent_id = a.agent_id;
+
+--4.2 Claims per Policy
+
+SELECT 
+  p.policy_number,
+  c.claim_id,
+  c.claim_date,
+  c.claim_status,
+  c.claim_amount
+FROM `cna-131041.xagenticetl.policy` p
+LEFT JOIN `cna-131041.xagenticetl.claim` c 
+  ON p.policy_id = c.policy_id;
+
+--4.3 Claim → Claim Items
+
+SELECT 
+  c.claim_id,
+  c.claim_status,
+  ci.item_description,
+  ci.item_amount
+FROM `cna-131041.xagenticetl.claim` c
+JOIN `cna-131041.xagenticetl.claim_item` ci 
+  ON c.claim_id = ci.claim_id;
+
+--4.4 Claim → Payments
+
+SELECT 
+  c.claim_id,
+  c.claim_amount,
+  p.payment_id,
+  p.payment_amount,
+  p.payment_date
+FROM `cna-131041.xagenticetl.claim` c
+LEFT JOIN `cna-131041.xagenticetl.payment` p 
+  ON c.claim_id = p.claim_id;
+
+--4.5 End–to–End Relationship Query
+
+SELECT 
+  ph.holder_name,
+  pol.policy_number,
+  c.claim_id,
+  ci.item_description,
+  ci.item_amount,
+  pay.payment_amount,
+  pay.payment_date,
+  ag.agent_name
+FROM `cna-131041.xagenticetl.policy_holder` ph
+JOIN `cna-131041.xagenticetl.policy` pol 
+  ON ph.policy_id = pol.policy_id
+LEFT JOIN `cna-131041.xagenticetl.claim` c 
+  ON pol.policy_id = c.policy_id
+LEFT JOIN `cna-131041.xagenticetl.claim_item` ci 
+  ON c.claim_id = ci.claim_id
+LEFT JOIN `cna-131041.xagenticetl.payment` pay 
+  ON c.claim_id = pay.claim_id
+JOIN `cna-131041.xagenticetl.agent` ag 
+  ON pol.agent_id = ag.agent_id
+ORDER BY ph.holder_name, c.claim_id;
+
+
+Visual ER Diagram Explanation
+
+Agent: The top-level entity representing insurance agents. Each agent has a unique agent_id and can be linked to multiple policies.
+
+Policy: Each policy has a unique policy_id and is linked to exactly one agent via agent_id. Policies represent insurance contracts and can have multiple policy holders and claims.
+
+Policy Holder: Represents individuals covered under a policy. Each policy holder is linked to one policy via policy_id.
+
+Claim: Represents claims made against a policy. Each claim is linked to one policy via policy_id and can have multiple claim items and payments.
+
+Claim Item: Detailed items within a claim, such as hospital charges or vehicle repairs. Each claim item is linked to one claim via claim_id.
+
+Payment: Payments made for claims. Each payment is linked to one claim via claim_id.
+
+Visualizing the Relationships:
+
+Imagine a tree starting from Agent at the top.
+
+From each Agent, multiple Policies branch out.
+
+From each Policy, branches lead to multiple Policy Holders and Claims.
+
+From each Claim, branches further divide into multiple Claim Items and Payments.
 
