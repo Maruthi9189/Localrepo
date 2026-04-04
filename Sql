@@ -46,3 +46,97 @@ CREATE TABLE `cna-131041.xagenticetl.payment` (
   payment_amount NUMERIC,
   payment_method STRING
 );
+
+
+--3.1 agent
+INSERT INTO `cna-131041.xagenticetl.agent`
+(agent_id, agent_name, branch, contact_number)
+VALUES
+('A1', 'John Mathews', 'Chicago', '312-555-1001'),
+('A2', 'Priya Sharma', 'New York', '212-555-2002'),
+('A3', 'Linda Green', 'Los Angeles', '310-555-3003'),
+('A4', 'Michael Brown', 'Houston', '713-555-4004'),
+('A5', 'Sara Lee', 'Miami', '305-555-5005'),
+('A6', 'David Kim', 'Seattle', '206-555-6006'),
+('A7', 'Emma Wilson', 'Denver', '720-555-7007'),
+('A8', 'James Clark', 'Boston', '617-555-8008'),
+('A9', 'Olivia Martinez', 'San Francisco', '415-555-9009'),
+('A10', 'Robert Johnson', 'Atlanta', '404-555-1010');
+
+--3.2 policy
+
+INSERT INTO `cna-131041.xagenticetl.policy`
+(policy_id, policy_number, policy_type, start_date, end_date, premium_amount, agent_id)
+VALUES
+('P1', 'POL1001', 'Health', '2024-01-01', '2025-01-01', 1200, 'A1'),
+('P2', 'POL1002', 'Auto', '2024-03-01', '2025-03-01', 900, 'A2'),
+('P3', 'POL1003', 'Home', '2024-02-15', '2025-02-15', 1500, 'A3'),
+('P4', 'POL1004', 'Life', '2024-04-01', '2025-04-01', 2000, 'A4'),
+('P5', 'POL1005', 'Travel', '2024-05-01', '2025-05-01', 800, 'A5'),
+('P6', 'POL1006', 'Health', '2024-06-01', '2025-06-01', 1300, 'A6'),
+('P7', 'POL1007', 'Auto', '2024-07-01', '2025-07-01', 950, 'A7'),
+('P8', 'POL1008', 'Home', '2024-08-01', '2025-08-01', 1600, 'A8'),
+('P9', 'POL1009', 'Life', '2024-09-01', '2025-09-01', 2100, 'A9'),
+('P10', 'POL1010', 'Travel', '2024-10-01', '2025-10-01', 850, 'A10');
+
+--3.3 policy_holder
+
+INSERT INTO `cna-131041.xagenticetl.policy_holder`
+(holder_id, policy_id, holder_name, dob, gender, contact_number)
+VALUES
+('H1', 'P1', 'Bharat Raj', '1988-05-10', 'Male', '312-555-3003'),
+('H2', 'P2', 'Anita Rao', '1990-09-15', 'Female', '212-555-4004'),
+('H3', 'P3', 'James Smith', '1975-12-20', 'Male', '310-555-5005'),
+('H4', 'P4', 'Linda Johnson', '1982-07-08', 'Female', '713-555-6006'),
+('H5', 'P5', 'Robert Lee', '1995-03-25', 'Male', '305-555-7007'),
+('H6', 'P6', 'Emily Davis', '1987-11-30', 'Female', '206-555-8008'),
+('H7', 'P7', 'Michael Wilson', '1992-01-17', 'Male', '720-555-9009'),
+('H8', 'P8', 'Jessica Martinez', '1985-06-05', 'Female', '617-555-1010'),
+('H9', 'P9', 'David Brown', '1978-09-12', 'Male', '415-555-1111'),
+('H10', 'P10', 'Sarah Clark', '1991-04-22', 'Female', '404-555-1212');
+
+--3.4 claim
+
+INSERT INTO `cna-131041.xagenticetl.claim`
+(claim_id, policy_id, claim_date, claim_status, claim_amount)
+VALUES
+('C1', 'P1', '2024-06-10', 'Approved', 5000),
+('C2', 'P2', '2024-07-15', 'Pending', 3000),
+('C3', 'P3', '2024-08-20', 'Rejected', 0),
+('C4', 'P4', '2024-09-05', 'Approved', 7000),
+('C5', 'P5', '2024-10-10', 'Pending', 2500),
+('C6', 'P6', '2024-11-12', 'Approved', 4500),
+('C7', 'P7', '2024-12-01', 'Pending', 3200),
+('C8', 'P8', '2025-01-15', 'Approved', 6000),
+('C9', 'P9', '2025-02-20', 'Rejected', 0),
+('C10', 'P10', '2025-03-25', 'Approved', 4000);
+
+--3.5 claim_item
+
+INSERT INTO `cna-131041.xagenticetl.claim_item`
+(item_id, claim_id, item_description, item_amount)
+VALUES
+('CI1', 'C1', 'Hospital Charges', 3500),
+('CI2', 'C1', 'Medicine Charges', 1500),
+('CI3', 'C2', 'Vehicle Repair', 3000),
+('CI4', 'C4', 'Surgery Charges', 5000),
+('CI5', 'C4', 'Medication', 2000),
+('CI6', 'C5', 'Travel Expenses', 2500),
+('CI7', 'C6', 'Hospital Charges', 4500),
+('CI8', 'C7', 'Vehicle Repair', 3200),
+('CI9', 'C8', 'Home Repair', 6000),
+('CI10', 'C10', 'Travel Insurance Claim', 4000);
+
+--3.6 payment
+
+INSERT INTO `cna-131041.xagenticetl.payment`
+(payment_id, claim_id, payment_date, payment_amount, payment_method)
+VALUES
+('PAY1', 'C1', '2024-06-20', 4000, 'Bank Transfer'),
+('PAY2', 'C1', '2024-06-25', 1000, 'Credit Card'),
+('PAY3', 'C4', '2024-09-15', 7000, 'Bank Transfer'),
+('PAY4', 'C6', '2024-11-20', 4500, 'Credit Card'),
+('PAY5', 'C8', '2025-01-25', 6000, 'Bank Transfer'),
+('PAY6', 'C10', '2025-04-01', 4000, 'Credit Card');
+
+
