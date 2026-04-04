@@ -1,0 +1,48 @@
+CREATE TABLE `cna-131041.xagenticetl.agent` (
+  agent_id STRING,
+  agent_name STRING,
+  branch STRING,
+  contact_number STRING
+);
+
+CREATE TABLE `cna-131041.xagenticetl.policy` (
+  policy_id STRING,
+  policy_number STRING,
+  policy_type STRING,
+  start_date DATE,
+  end_date DATE,
+  premium_amount NUMERIC,
+  agent_id STRING
+);
+
+CREATE TABLE `cna-131041.xagenticetl.policy_holder` (
+  holder_id STRING,
+  policy_id STRING,
+  holder_name STRING,
+  dob DATE,
+  gender STRING,
+  contact_number STRING
+);
+
+CREATE TABLE `cna-131041.xagenticetl.claim` (
+  claim_id STRING,
+  policy_id STRING,
+  claim_date DATE,
+  claim_status STRING,
+  claim_amount NUMERIC
+);
+
+CREATE TABLE `cna-131041.xagenticetl.claim_item` (
+  item_id STRING,
+  claim_id STRING,
+  item_description STRING,
+  item_amount NUMERIC
+);
+
+CREATE TABLE `cna-131041.xagenticetl.payment` (
+  payment_id STRING,
+  claim_id STRING,
+  payment_date DATE,
+  payment_amount NUMERIC,
+  payment_method STRING
+);
